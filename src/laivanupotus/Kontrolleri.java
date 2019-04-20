@@ -6,11 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
+import java.util.Arrays;
 
 
 public class Kontrolleri {
@@ -49,8 +49,17 @@ public class Kontrolleri {
         infoTeksti.setFont((Font.font("Monospaced", 20)));
 
         TextArea outputTeksti = new TextArea();
-        outputTeksti.setPrefSize(600, 100);
-        outputTeksti.setWrapText(true);
+        outputTeksti.setPrefSize(300, 100);
+
+        BorderPane infoRuutu = new BorderPane();
+        infoRuutu.setPrefSize(300, 100);
+        VBox tekstit = new VBox();
+        Label lblVeneOtsikko = new Label("Vihollisen laivasto:");
+        Label lblSubit = new Label("Sukellusveneet:");
+        Label lblRist = new Label("Risteilijät:");
+        Label lblLento = new Label("Lentotukialukset:");
+        tekstit.getChildren().addAll(lblVeneOtsikko, lblSubit, lblRist, lblLento);
+        infoRuutu.setRight(tekstit);
 
         GridPane omaPeliAlue = new GridPane();
         for (int i = 0; i < 10; i++) {
@@ -93,12 +102,14 @@ public class Kontrolleri {
         logiikka.setLaivastot(laivastot);   // annetaan logiikalle asetellut laivastot
 
         HBox peliAlue = new HBox();
+        HBox alaOsa = new HBox();
         peliAlue.setSpacing(30);
         peliAlue.getChildren().add(omaPeliAlue);
         peliAlue.getChildren().add(vihunPeliAlue);
+        alaOsa.getChildren().addAll(outputTeksti, infoRuutu);
         runko.setTop(infoTeksti);
         runko.setCenter(peliAlue);
-        runko.setBottom(outputTeksti);
+        runko.setBottom(alaOsa);
 
 
         // ruutuihin ampuminen vuorotellen: pelaajan napin toiminnallisuuden sisään on leivottu tekoälyn oma siirto,
@@ -168,6 +179,8 @@ public class Kontrolleri {
                     if (laivastot.onkoOmatLaivatTuhottu())
                         outputTeksti.appendText(    "****************************************\n" +
                                                     "Kaikki laivasi tuhottiin, hävisit pelin! ");
+
+
 
                 });
             }

@@ -57,14 +57,14 @@ public class Logiikka {
             else if (laiva.getKoko() == 2) {
                 if (laiva.getRistSijainti()[0][0] == x && laiva.getRistSijainti()[0][1] == y || laiva.getRistSijainti()[1][0] == x &&
                         laiva.getRistSijainti()[1][1] == y) {
-                            tekoaly.tallennaOsuma(new int[]{x, y});
+                            //tekoaly.tallennaOsuma(new int[]{x, y});
                             return laiva.setOsuma();
                 }
             }
             else if (laiva.getKoko() == 3) {
                 if (laiva.getLentoSijainti()[0][0] == x && laiva.getLentoSijainti()[0][1] == y || laiva.getLentoSijainti()[1][0] == x &&
                         laiva.getLentoSijainti()[1][1] == y || laiva.getLentoSijainti()[2][0] == x && laiva.getLentoSijainti()[2][1] == y) {
-                            tekoaly.tallennaOsuma(new int[]{x, y});
+                            //tekoaly.tallennaOsuma(new int[]{x, y});
                             return laiva.setOsuma();
                 }
             }

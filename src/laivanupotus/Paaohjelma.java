@@ -68,6 +68,10 @@ public class Paaohjelma extends Application {
 
         });
 
+        lopetaPeli.setOnAction(e -> {
+            System.exit(0);
+        });
+
 /*        aloitaPeli.setOnAction(e -> {
             ikkuna.setScene(paaNakyma);
             ikkuna.show();
