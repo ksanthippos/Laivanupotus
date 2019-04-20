@@ -75,8 +75,8 @@ public class Tekoaly {
 
         Random random = new Random();
         int[] maali = new int[2];
-        maali[0] = random.nextInt(10);
-        maali[1] = random.nextInt(10);
+/*        maali[0] = random.nextInt(10);
+        maali[1] = random.nextInt(10);*/
 
         /*
         asetetaan varattujen ruutujen taulukko isomman 12x12 - taulukon sisään, jotta ruutujen ympäristön voi tutkia
@@ -90,18 +90,21 @@ public class Tekoaly {
         // edellisellä kerralla ei osuttu mihinkään --> ammutaan satunnaiseen ruutuun
         if (!tuliOsuma) {
             while (true) {
-                if (mitaRuudussaOn(maali) < 0) {    // arvotaan uusi maali
-                    maali[0] = random.nextInt(10);
-                    maali[1] = random.nextInt(10);
+                maali[0] = random.nextInt(10);
+                maali[1] = random.nextInt(10);
+                if (mitaRuudussaOn(maali) < 0)  // arvotaan uusi maali
                     continue;
-                } else if (mitaRuudussaOn(maali) == 1) {
+
+                else if (mitaRuudussaOn(maali) == 1) {
                     tuliOsuma = true;
                     edellinenOsuma = maali;
                     return maali;
                 }
-                else if (mitaRuudussaOn(maali) == 0)
+
+                else if (mitaRuudussaOn(maali) == 0) {
                     tuliOsuma = false;
                     return maali;
+                }
             }
         }
 
@@ -118,9 +121,10 @@ public class Tekoaly {
                     if ((i == x && i == y) || (i == x - 1 && j == y - 1) || (i == x - 1 && j == y + 1) || (i == x + 1 && j == y - 1)
                     || (i == x + 1 && j == y + 1))
                         continue;
-
-                    int[] arvo = {i, j};
-                    arvottavat.add(arvo);
+                    else {
+                        int[] arvo = {i, j};
+                        arvottavat.add(arvo);
+                    }
                 }
             }
 
@@ -134,15 +138,18 @@ public class Tekoaly {
                     if (arvottavat.size() == 0) {   // arvotaan uusi satunnainen maali, koska kaikki ruudut täynnä
 
                         while (true) {
-                            if (mitaRuudussaOn(maali) < 0) {    // arvotaan uusi maali
-                                maali[0] = random.nextInt(10);
-                                maali[1] = random.nextInt(10);
+                            maali[0] = random.nextInt(10);
+                            maali[1] = random.nextInt(10);
+                            if (mitaRuudussaOn(maali) < 0)     // arvotaan uusi maali
                                 continue;
-                            } else if (mitaRuudussaOn(maali) == 1) {
+
+                            else if (mitaRuudussaOn(maali) == 1) {
                                 tuliOsuma = true;
                                 edellinenOsuma = maali;
                                 return maali;
-                            } else if (mitaRuudussaOn(maali) == 0)
+                            }
+
+                            else if (mitaRuudussaOn(maali) == 0)
                                 tuliOsuma = false;
                             return maali;
                         }
