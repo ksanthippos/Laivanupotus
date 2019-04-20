@@ -99,9 +99,9 @@ public class Tekoaly {
     public int[] tekoAlyAmpuu() {
 
         Random random = new Random();
+        List<int[]> arvottavat = new ArrayList<>();
         int[] maali = new int[2];
-/*        maali[0] = random.nextInt(10);
-        maali[1] = random.nextInt(10);*/
+        int x, y;
 
         /*
         asetetaan varattujen ruutujen taulukko isomman 12x12 - taulukon sisään, jotta ruutujen ympäristön voi tutkia
@@ -120,9 +120,9 @@ public class Tekoaly {
         // edellisellä kerralla osutiin, mutta suunta ei vielä tiedossa --> ammutaan edellisen osumakohdan ympäröiviin ruutuihin satunnaisesti
         else if (tuliOsuma && ampumaSuunta == 0) {
 
-            int x = edellinenOsuma[0];
-            int y = edellinenOsuma[1];
-            List<int[]> arvottavat = new ArrayList<>();
+            x = edellinenOsuma[0];
+            y = edellinenOsuma[1];
+            arvottavat.clear();
 
             // osumakohdasta ylös, alas, oikealle ja vasemmalle
             if (x > 0 && x < 9 && y > 0 && y < 9) {
@@ -205,27 +205,24 @@ public class Tekoaly {
                 if (mitaRuudussaOn(maali) < 0) {    // maaliin ammuttu jo aiemmin
                     arvottavat.remove(maali);
                     continue;   // arvotaan uusi maali jäljellä olevien joukosta
-
-                } else if (mitaRuudussaOn(maali) == 1) {
-
+                }
+                else if (mitaRuudussaOn(maali) == 0) {
                     tuliOsuma = false;
-                    /*suunnan asettaminen tähän
-                    verrataan, miten tämän osuman ja edellisen koordinaatit poikkeavat toisistaan
-
-                    * */
-
-
-
-                    //tuliOsuma = true;
-                    //edellinenOsuma = maali;
-
                     return maali;
                 }
+                /*                } else if (mitaRuudussaOn(maali) == 1) {
 
-/*                else if (tutkiViereinen(maali) == 0) {
-                    tuliOsuma = false;
+
+                 *//*suunnan asettaminen tähän
+                    verrataan, miten tämän osuman ja edellisen koordinaatit poikkeavat toisistaan*//*
+
+                    tuliOsuma = true;
+                    edellinenOsuma = maali;
+
                     return maali;
                 }*/
+
+
             }
 
         }
