@@ -65,6 +65,10 @@ public class Tekoaly {
         return laivastot.getOmatVaratutRuudut()[koordinaatti[0]][koordinaatti[1]];
     }
 
+    public int tutkiViereinen(int[] koordinaatti) {
+        return varatutKopio[koordinaatti[0]][koordinaatti[1]];
+    }
+
 
 
     public int[] tekoAlyAmpuu() {
@@ -96,6 +100,7 @@ public class Tekoaly {
                     return maali;
                 }
                 else if (mitaRuudussaOn(maali) == 0)
+                    tuliOsuma = false;
                     return maali;
             }
         }
@@ -107,9 +112,11 @@ public class Tekoaly {
             List<int[]> arvottavat = new ArrayList<>();
 
             // laitetaan osumakohtaa ympäröivät koordinaatit listaan
-            for (int i = x -1; i < x + 2; i++) {
+            for (int i = x - 1; i < x + 2; i++) {
                 for (int j = y - 1; j < y + 2; j++) {
-                    if (i == x && j == y)
+                    // ei tutkita keskikohtaa eikä vinottain vierekkäisiä
+                    if ((i == x && i == y) || (i == x - 1 && j == y - 1) || (i == x - 1 && j == y + 1) || (i == x + 1 && j == y - 1)
+                    || (i == x + 1 && j == y + 1))
                         continue;
 
                     int[] arvo = {i, j};
@@ -119,24 +126,48 @@ public class Tekoaly {
 
             // arvottavien joukosta valitaan ja palautetaan oikeanlainen luku (= ei vanha ruutu)
             while (true) {
-                int valinta = random.nextInt(arvottavat.size() + 1);
+                int valinta = random.nextInt(arvottavat.size());
                 maali = arvottavat.get(valinta);
 
-                if (mitaRuudussaOn(maali) < 0) {    // arvotaan uusi maali
+                if (tutkiViereinen(maali) < 0) {
                     arvottavat.remove(maali);
-                    continue;
+                    if (arvottavat.size() == 0) {   // arvotaan uusi satunnainen maali, koska kaikki ruudut täynnä
 
-                } else if (mitaRuudussaOn(maali) == 1) {
+                        while (true) {
+                            if (mitaRuudussaOn(maali) < 0) {    // arvotaan uusi maali
+                                maali[0] = random.nextInt(10);
+                                maali[1] = random.nextInt(10);
+                                continue;
+                            } else if (mitaRuudussaOn(maali) == 1) {
+                                tuliOsuma = true;
+                                edellinenOsuma = maali;
+                                return maali;
+                            } else if (mitaRuudussaOn(maali) == 0)
+                                tuliOsuma = false;
+                            return maali;
+                        }
+                    }
+
+                    continue;   // arvotaan uusi maali jäljellä olevien joukosta
+
+                } else if (tutkiViereinen(maali) == 1) {
 
                     tuliOsuma = false;
-                    // suunnan asettaminen tähän
+                    /*suunnan asettaminen tähän
+                    verrataan, miten tämän osuman ja edellisen koordinaatit poikkeavat toisistaan
+
+                    * */
+
+
+
                     //tuliOsuma = true;
                     //edellinenOsuma = maali;
 
                     return maali;
                 }
 
-                else if (mitaRuudussaOn(maali) == 0)
+                else if (tutkiViereinen(maali) == 0)
+                    tuliOsuma = false;
                     return maali;
             }
 
