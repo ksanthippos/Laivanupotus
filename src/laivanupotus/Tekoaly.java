@@ -21,8 +21,8 @@ public class Tekoaly {
         this.ampumaSuunta = 0;
 
         varatutKopio = new int[12][12];
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++)
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++)
                 varatutKopio[i][j] = 0;
         }
 
@@ -65,8 +65,33 @@ public class Tekoaly {
         return laivastot.getOmatVaratutRuudut()[koordinaatti[0]][koordinaatti[1]];
     }
 
-    public int tutkiViereinen(int[] koordinaatti) {
+/*    public int tutkiViereinen(int[] koordinaatti) {
         return varatutKopio[koordinaatti[0]][koordinaatti[1]];
+    }*/
+
+    // usein käytetty apumetodi
+    public int[] ammuSatunnaiseenMaaliin() {
+
+        Random random = new Random();
+        int[] maali = new int[2];
+
+        while (true) {
+            maali[0] = random.nextInt(10);
+            maali[1] = random.nextInt(10);
+            if (mitaRuudussaOn(maali) < 0)  // arvotaan uusi maali
+                continue;
+
+            else if (mitaRuudussaOn(maali) == 1) {
+                tuliOsuma = true;
+                edellinenOsuma = maali;
+                return maali;
+            }
+
+            else if (mitaRuudussaOn(maali) == 0) {
+                tuliOsuma = false;
+                return maali;
+            }
+        }
     }
 
 
@@ -82,40 +107,79 @@ public class Tekoaly {
         asetetaan varattujen ruutujen taulukko isomman 12x12 - taulukon sisään, jotta ruutujen ympäristön voi tutkia
         helposti ilman ongelmia taulukon rajojen ylityksestä
         */
-        for (int i = 0; i < 10; i++) {
+/*        for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++)
                 varatutKopio[i + 1][j + 1] = laivastot.getOmatVaratutRuudut()[i][j];
-        }
+        }*/
 
         // edellisellä kerralla ei osuttu mihinkään --> ammutaan satunnaiseen ruutuun
         if (!tuliOsuma) {
-            while (true) {
-                maali[0] = random.nextInt(10);
-                maali[1] = random.nextInt(10);
-                if (mitaRuudussaOn(maali) < 0)  // arvotaan uusi maali
-                    continue;
-
-                else if (mitaRuudussaOn(maali) == 1) {
-                    tuliOsuma = true;
-                    edellinenOsuma = maali;
-                    return maali;
-                }
-
-                else if (mitaRuudussaOn(maali) == 0) {
-                    tuliOsuma = false;
-                    return maali;
-                }
-            }
+            return ammuSatunnaiseenMaaliin();
         }
 
         // edellisellä kerralla osutiin, mutta suunta ei vielä tiedossa --> ammutaan edellisen osumakohdan ympäröiviin ruutuihin satunnaisesti
         else if (tuliOsuma && ampumaSuunta == 0) {
+
             int x = edellinenOsuma[0];
             int y = edellinenOsuma[1];
             List<int[]> arvottavat = new ArrayList<>();
 
+            // osumakohdasta ylös, alas, oikealle ja vasemmalle
+            if (x > 0 && x < 9 && y > 0 && y < 9) {
+                arvottavat.add(new int[]{x, y - 1});
+                arvottavat.add(new int[]{x - 1, y});
+                arvottavat.add(new int[]{x + 1, y});
+                arvottavat.add(new int[]{x, y + 1});
+            }
+            // vasemmassa reunassa mutta ei nurkissa
+            else if (x == 0 && y > 0 && y < 8) {
+                arvottavat.add(new int[]{x + 1, y});
+                arvottavat.add(new int[]{x, y - 1});
+                arvottavat.add(new int[]{x, y + 1});
+            }
+            // oikeassa reunassa mutta ei nurkissa
+            else if (x == 9 && y > 0 && y < 8) {
+                arvottavat.add(new int[]{x - 1, y});
+                arvottavat.add(new int[]{x, y - 1});
+                arvottavat.add(new int[]{x, y + 1});
+            }
+            // yläreunassa mutta ei nurkissa
+            else if (y == 0 && x > 0 && x < 8) {
+                arvottavat.add(new int[]{x - 1, y});
+                arvottavat.add(new int[]{x + 1, y});
+                arvottavat.add(new int[]{x, y + 1});
+            }
+            // alareunassa mutta ei nurkissa
+            else if (y == 9 && x > 0 && x < 8) {
+                arvottavat.add(new int[]{x - 1, y});
+                arvottavat.add(new int[]{x + 1, y});
+                arvottavat.add(new int[]{x, y - 1});
+            }
+            // vasen ylänurkka
+            else if (x == 0 && y == 0) {
+                arvottavat.add(new int[]{x + 1, y});
+                arvottavat.add(new int[]{x, y + 1});
+            }
+            // oikea ylänurkka
+            else if (x == 9 && y == 0) {
+                arvottavat.add(new int[]{x - 1, y});
+                arvottavat.add(new int[]{x, y + 1});
+            }
+            // vasen alanurkka
+            else if (x == 0 && y == 9) {
+                arvottavat.add(new int[]{x + 1, y});
+                arvottavat.add(new int[]{x, y - 1});
+            }
+            // oikea alanurkka
+            else if (x == 9 && y == 9) {
+                arvottavat.add(new int[]{x - 1, y});
+                arvottavat.add(new int[]{x, y - 1});
+            }
+
+
+
             // laitetaan osumakohtaa ympäröivät koordinaatit listaan
-            for (int i = x - 1; i < x + 2; i++) {
+/*            for (int i = x - 1; i < x + 2; i++) {
                 for (int j = y - 1; j < y + 2; j++) {
                     // ei tutkita keskikohtaa eikä vinottain vierekkäisiä
                     if ((i == x && i == y) || (i == x - 1 && j == y - 1) || (i == x - 1 && j == y + 1) || (i == x + 1 && j == y - 1)
@@ -126,38 +190,23 @@ public class Tekoaly {
                         arvottavat.add(arvo);
                     }
                 }
-            }
+            }*/
 
-            // arvottavien joukosta valitaan ja palautetaan oikeanlainen luku (= ei vanha ruutu)
+
             while (true) {
+
+                // jos ei ole viereisiä ruutuja, niin jatketaan ampumista muualla
+                if (arvottavat.size() == 0)
+                    return ammuSatunnaiseenMaaliin();
+
                 int valinta = random.nextInt(arvottavat.size());
                 maali = arvottavat.get(valinta);
 
-                if (tutkiViereinen(maali) < 0) {
+                if (mitaRuudussaOn(maali) < 0) {    // maaliin ammuttu jo aiemmin
                     arvottavat.remove(maali);
-                    if (arvottavat.size() == 0) {   // arvotaan uusi satunnainen maali, koska kaikki ruudut täynnä
-
-                        while (true) {
-                            maali[0] = random.nextInt(10);
-                            maali[1] = random.nextInt(10);
-                            if (mitaRuudussaOn(maali) < 0)     // arvotaan uusi maali
-                                continue;
-
-                            else if (mitaRuudussaOn(maali) == 1) {
-                                tuliOsuma = true;
-                                edellinenOsuma = maali;
-                                return maali;
-                            }
-
-                            else if (mitaRuudussaOn(maali) == 0)
-                                tuliOsuma = false;
-                            return maali;
-                        }
-                    }
-
                     continue;   // arvotaan uusi maali jäljellä olevien joukosta
 
-                } else if (tutkiViereinen(maali) == 1) {
+                } else if (mitaRuudussaOn(maali) == 1) {
 
                     tuliOsuma = false;
                     /*suunnan asettaminen tähän
@@ -173,9 +222,10 @@ public class Tekoaly {
                     return maali;
                 }
 
-                else if (tutkiViereinen(maali) == 0)
+/*                else if (tutkiViereinen(maali) == 0) {
                     tuliOsuma = false;
                     return maali;
+                }*/
             }
 
         }
