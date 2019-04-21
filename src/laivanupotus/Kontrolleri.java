@@ -27,16 +27,12 @@ public class Kontrolleri {
     private String osumaSt = "-fx-background-color: red; -fx-border-color: black; -fx-border-width: 0 1 1 0; ";
 
 
-    // kirjanpito vihollisten laivojen lukumääristä
-
-
     public Kontrolleri() {
         this.omatRuudut = new Button[10][10];
         this.vihunRuudut = new Button[10][10];
         this.laivastot = new Laivastot();
         this.tekoaly = new Tekoaly(this.laivastot);
         this.logiikka = new Logiikka(this.tekoaly);
-
     }
 
 

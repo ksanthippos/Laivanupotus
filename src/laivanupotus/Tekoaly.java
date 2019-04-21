@@ -8,15 +8,13 @@ public class Tekoaly {
     private Laivastot laivastot;
     private int[] edellinenOsuma;
     private int ampumaSuunta;    // ei suuntaa = 0; 1 = ylös, 2 = oikea, 3 = alas, 4 = vasen
+    private int kiertoSuunta;
     private boolean tuliOsuma;
-
     private boolean viimeksiTuhoutui;
 
 
     public Tekoaly(Laivastot laivastot) {
         this.laivastot = laivastot;
-        this.ampumaSuunta = 0;
-
     }
 
     public void ammuttiinOhi() {
@@ -68,20 +66,35 @@ public class Tekoaly {
         int[] maali = new int[2];
         int x, y, valinta;
 
-
         // edellisellä kerralla ei osuttu mihinkään tai tuhottiin laiva --> ammutaan satunnaiseen ruutuun
         if (!tuliOsuma || viimeksiTuhoutui) {
+            viimeksiTuhoutui = false;
             return ammuSatunnaiseenMaaliin();
         }
 
         // edellisellä kerralla osutiin, mutta suunta ei vielä tiedossa --> ammutaan edellisen osumakohdan ympäröiviin ruutuihin satunnaisesti
         else if (tuliOsuma && ampumaSuunta == 0 && !viimeksiTuhoutui) {
 
-
-            // voisiko tämän yksinkertaistaa siten, että arvonnan sijaan ammuttaisiin vain aina samaan tapaan, myötäpäivää kiertäen?
-
             x = edellinenOsuma[0];
             y = edellinenOsuma[1];
+
+/*            // kierretään osumakohdan ympäri myötäpäivään aloittaen ylhäältä
+            if (kiertoSuunta == 1 && y > 0)
+                maali = new int[]{x, y - 1};
+            else if (kiertoSuunta == 2 && x < 9)
+                maali = new int[]{x + 1, y};
+            else if (kiertoSuunta == 3 && y < 9)
+                maali = new int[]{x, y + 1};
+            else if (kiertoSuunta == 4 && x > 0)
+                maali = new int[]{x - 1, y};
+
+
+            kiertoSuunta++; // seuraavalla kerralla ammutaan eri suuntaan
+            if (kiertoSuunta > 4)
+                kiertoSuunta = 1;*/
+
+
+
             arvottavat.clear();
 
             // osumakohdasta ylös, alas, oikealle ja vasemmalle
@@ -92,25 +105,25 @@ public class Tekoaly {
                 arvottavat.add(new int[]{x, y + 1});
             }
             // vasemmassa reunassa mutta ei nurkissa
-            else if (x == 0 && y > 0 && y < 8) {
+            else if (x == 0 && y > 0 && y < 9) {
                 arvottavat.add(new int[]{x + 1, y});
                 arvottavat.add(new int[]{x, y - 1});
                 arvottavat.add(new int[]{x, y + 1});
             }
             // oikeassa reunassa mutta ei nurkissa
-            else if (x == 9 && y > 0 && y < 8) {
+            else if (x == 9 && y > 0 && y < 9) {
                 arvottavat.add(new int[]{x - 1, y});
                 arvottavat.add(new int[]{x, y - 1});
                 arvottavat.add(new int[]{x, y + 1});
             }
             // yläreunassa mutta ei nurkissa
-            else if (y == 0 && x > 0 && x < 8) {
+            else if (y == 0 && x > 0 && x < 9) {
                 arvottavat.add(new int[]{x - 1, y});
                 arvottavat.add(new int[]{x + 1, y});
                 arvottavat.add(new int[]{x, y + 1});
             }
             // alareunassa mutta ei nurkissa
-            else if (y == 9 && x > 0 && x < 8) {
+            else if (y == 9 && x > 0 && x < 9) {
                 arvottavat.add(new int[]{x - 1, y});
                 arvottavat.add(new int[]{x + 1, y});
                 arvottavat.add(new int[]{x, y - 1});
