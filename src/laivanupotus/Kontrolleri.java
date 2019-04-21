@@ -151,27 +151,31 @@ public class Kontrolleri {
                     lblRist.setText("Risteilijät: " + laivastot.getVihunRist());
                     lblLento.setText("Lentotukialukset: " + laivastot.getVihunLento());
 
+
                     // *********************
                     // vihollisen vuoro
+                    vihunPeliAlue.setDisable(true);
 
                     int maali[] = tekoaly.tekoAlyAmpuu();
                     int a = maali[0];
                     int b = maali[1];
 
-
                     Button nappi = omatRuudut[a][b];
                     nappi.setOnAction(eV -> {
+
                         if (laivastot.getOmatVaratutRuudut()[a][b] == 1) {
                             outputTeksti.appendText("Pelaajan " + logiikka.vihuOsuu(a, b) + "\n");
                             omatRuudut[a][b].setStyle(osumaSt);
                             laivastot.setOmatVaratutRuudut(maali, -2);
+                            vihunPeliAlue.setDisable(false);
                         }
 
                         else {
-                        omatRuudut[a][b].setStyle(vihuOhiSt);
-                        laivastot.setOmatVaratutRuudut(maali, -1);
-                        tekoaly.ammuttiinOhi();
-                        outputTeksti.appendText("Vihollinen ampui ohi.\n");
+                            omatRuudut[a][b].setStyle(vihuOhiSt);
+                            laivastot.setOmatVaratutRuudut(maali, -1);
+                            tekoaly.ammuttiinOhi();
+                            outputTeksti.appendText("Vihollinen ampui ohi.\n");
+                            vihunPeliAlue.setDisable(false);
                         }
                     });
 
@@ -185,6 +189,7 @@ public class Kontrolleri {
 
                     tauko.play();
 
+
                     if (laivastot.onkoOmatLaivatTuhottu())
                         outputTeksti.appendText(    "****************************************\n" +
                                                     "Kaikki laivasi tuhottiin, hävisit pelin! ");
@@ -192,6 +197,7 @@ public class Kontrolleri {
 
 
                 });
+
             }
         }
 
