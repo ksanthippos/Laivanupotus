@@ -66,16 +66,19 @@ public class Tekoaly {
         Random random = new Random();
         List<int[]> arvottavat = new ArrayList<>();
         int[] maali = new int[2];
-        int x, y;
+        int x, y, valinta;
 
 
-        // edellisellä kerralla ei osuttu mihinkään --> ammutaan satunnaiseen ruutuun
-        if (!tuliOsuma) {
+        // edellisellä kerralla ei osuttu mihinkään tai tuhottiin laiva --> ammutaan satunnaiseen ruutuun
+        if (!tuliOsuma || viimeksiTuhoutui) {
             return ammuSatunnaiseenMaaliin();
         }
 
         // edellisellä kerralla osutiin, mutta suunta ei vielä tiedossa --> ammutaan edellisen osumakohdan ympäröiviin ruutuihin satunnaisesti
         else if (tuliOsuma && ampumaSuunta == 0 && !viimeksiTuhoutui) {
+
+
+            // voisiko tämän yksinkertaistaa siten, että arvonnan sijaan ammuttaisiin vain aina samaan tapaan, myötäpäivää kiertäen?
 
             x = edellinenOsuma[0];
             y = edellinenOsuma[1];
@@ -141,7 +144,7 @@ public class Tekoaly {
                     return ammuSatunnaiseenMaaliin();
 
                 // arvotaan ampumakohta
-                int valinta = random.nextInt(arvottavat.size());
+                valinta = random.nextInt(arvottavat.size());
                 maali = arvottavat.get(valinta);
 
                 if (mitaRuudussaOn(maali) < 0) {    // maaliin ammuttu jo aiemmin

@@ -51,25 +51,39 @@ public class Logiikka {
 
         for (Laiva laiva: laivastot.getOmatLaivat()) {
             if (laiva.getKoko() == 1) {
-
-                // sukellusveneosumia ei tietenkään tallenneta tekoälyn muistiin
                 if (laiva.getSubSijainti()[0][0] == x && laiva.getSubSijainti()[0][1] == y) {
-                    tekoaly.setViimeksiTuhoutui(true);
-                    return laiva.setOsuma();
+                        tekoaly.setViimeksiTuhoutui(true);
+                        return laiva.setOsuma();
                 }
             }
             else if (laiva.getKoko() == 2) {
                 if (laiva.getRistSijainti()[0][0] == x && laiva.getRistSijainti()[0][1] == y || laiva.getRistSijainti()[1][0] == x &&
                         laiva.getRistSijainti()[1][1] == y) {
-                            //tekoaly.tallennaOsuma(new int[]{x, y});
-                            return laiva.setOsuma();
+
+                            String palautus = laiva.setOsuma();
+                            if (!palautus.equals("laiva sai osuman!")) {
+                                tekoaly.setViimeksiTuhoutui(true);
+                                return palautus;
+                            }
+                            else {
+                                tekoaly.setViimeksiTuhoutui(false);
+                                return palautus;
+                            }
                 }
             }
             else if (laiva.getKoko() == 3) {
                 if (laiva.getLentoSijainti()[0][0] == x && laiva.getLentoSijainti()[0][1] == y || laiva.getLentoSijainti()[1][0] == x &&
                         laiva.getLentoSijainti()[1][1] == y || laiva.getLentoSijainti()[2][0] == x && laiva.getLentoSijainti()[2][1] == y) {
-                            //tekoaly.tallennaOsuma(new int[]{x, y});
-                            return laiva.setOsuma();
+
+                            String palautus = laiva.setOsuma();
+                            if (!palautus.equals("laiva sai osuman!")) {
+                                tekoaly.setViimeksiTuhoutui(true);
+                                return palautus;
+                            }
+                            else {
+                                tekoaly.setViimeksiTuhoutui(false);
+                                return palautus;
+                            }
                 }
             }
         }

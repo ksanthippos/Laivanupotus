@@ -10,8 +10,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.util.Arrays;
-
 
 public class Kontrolleri {
 
@@ -22,11 +20,11 @@ public class Kontrolleri {
     private Tekoaly tekoaly;
 
     // nappien CSS-värityylit
-    private String omaLaivaSt = "-fx-background-color: #A0522D; ";
-    private String vihuLaivaSt = "-fx-background-color: #B8860B; ";
-    private String vesiSt = "-fx-background-color: #66CDAA; " ;
-    private String vihuOhiSt = "-fx-background-color: yellow; ";
-    private String osumaSt = "-fx-background-color: red; ";
+    private String omaLaivaSt = "-fx-background-color: #A0522D; -fx-border-color: black; -fx-border-width: 0 1 1 0; ";
+    private String vihuLaivaSt = "-fx-background-color: #B8860B; -fx-border-color: black; -fx-border-width: 0 1 1 0;";
+    private String vesiSt = "-fx-background-color: #66CDAA; -fx-border-color: black; -fx-border-width: 0 1 1 0;" ;
+    private String vihuOhiSt = "-fx-background-color: yellow; -fx-border-color: black; -fx-border-width: 0 1 1 0;";
+    private String osumaSt = "-fx-background-color: red; -fx-border-color: black; -fx-border-width: 0 1 1 0; ";
 
 
     // kirjanpito vihollisten laivojen lukumääristä
@@ -129,6 +127,7 @@ public class Kontrolleri {
                     // pelaajan vuoro
 
                     if (laivastot.getVihunVaratutRuudut()[x][y] == 1) {
+
                         outputTeksti.appendText("Vihollisen " + logiikka.pelaajaOsuu(x, y) + "\n");
                         vihunRuudut[x][y].setStyle(osumaSt);
                         laivastot.setVihunVaratutRuudut(new int[]{x, y}, -2);
