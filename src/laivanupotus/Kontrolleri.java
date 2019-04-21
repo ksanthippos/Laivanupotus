@@ -48,8 +48,8 @@ public class Kontrolleri {
         BorderPane runko = new BorderPane();
         runko.setPrefSize(650, 400);
 
-        Label infoTeksti = new Label("Peli-infoa tänne");
-        infoTeksti.setFont((Font.font("Monospaced", 20)));
+        Label infoTeksti = new Label("Pelaajan vuoro");
+        infoTeksti.setFont((Font.font("Monospaced", 15)));
 
         TextArea outputTeksti = new TextArea();
         outputTeksti.setPrefSize(300, 100);
@@ -155,6 +155,7 @@ public class Kontrolleri {
                     // *********************
                     // vihollisen vuoro
                     vihunPeliAlue.setDisable(true);
+                    infoTeksti.setText("Vihollisen vuoro");
 
                     int maali[] = tekoaly.tekoAlyAmpuu();
                     int a = maali[0];
@@ -168,6 +169,7 @@ public class Kontrolleri {
                             omatRuudut[a][b].setStyle(osumaSt);
                             laivastot.setOmatVaratutRuudut(maali, -2);
                             vihunPeliAlue.setDisable(false);
+                            infoTeksti.setText("Pelaajan vuoro");
                         }
 
                         else {
@@ -176,6 +178,7 @@ public class Kontrolleri {
                             tekoaly.ammuttiinOhi();
                             outputTeksti.appendText("Vihollinen ampui ohi.\n");
                             vihunPeliAlue.setDisable(false);
+                            infoTeksti.setText("Pelaajan vuoro");
                         }
                     });
 

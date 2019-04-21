@@ -43,6 +43,9 @@ public class Logiikka {
 
     }
 
+
+    // pitäisiköhän täällä tarkistaa osuman yhteydessä, tuhosiko vihollinen laivan? sen tiedon voisi antaa tekoälylle
+
     public String vihuOsuu(int x, int y) {
 
 
@@ -51,6 +54,7 @@ public class Logiikka {
 
                 // sukellusveneosumia ei tietenkään tallenneta tekoälyn muistiin
                 if (laiva.getSubSijainti()[0][0] == x && laiva.getSubSijainti()[0][1] == y) {
+                    tekoaly.setViimeksiTuhoutui(true);
                     return laiva.setOsuma();
                 }
             }

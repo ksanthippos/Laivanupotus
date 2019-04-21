@@ -124,22 +124,30 @@ public class Laivastot {
 
 
 
-
-
     // KÄSIN ASETTELUN METODI TÄHÄN
-    public void asetteleOmatLaivat() {
+    // suunnan arvo: 1 = ylös, 2 = oikea, 3 = alas, 4 = vasen
+    public void asetaLaiva(int alkuX, int alkuY, int loppuX, int loppuY, int koko, int suunta) {
 
-        while (true) {
-
-
-
-
+        if (omatLaivat.size() == 6)
+            // tähän palautusarvona kaikki laivat täytetty tms
 
 
-
-            if (omatLaivat.size() == 6)
-                break;
+        if (koko == 1) {
+            if (omatVaratutRuudut[alkuX][alkuY] == 0) {
+                Laiva subi = new Laiva(1, 1);
+                subi.setSijainti(new int[alkuX][alkuY]);
+                omatVaratutRuudut[alkuX][alkuY] = 1;
+                omatLaivat.add(subi);
+            }
         }
+
+        else if (koko == 2) {
+            if (alkuX > 0 && alkuY > 0 && alkuX < 9 && alkuY < 9 && loppuX > 0 && loppuY > 0 && loppuX < 9 && loppuY < 9) {
+                Laiva subi = new Laiva(2, suunta);
+            }
+
+        }
+
     }
 
 

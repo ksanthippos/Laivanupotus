@@ -6,58 +6,26 @@ import java.util.Random;
 public class Tekoaly {
 
     private Laivastot laivastot;
-    private int[][] varatutKopio;
     private int[] edellinenOsuma;
     private int ampumaSuunta;    // ei suuntaa = 0; 1 = ylös, 2 = oikea, 3 = alas, 4 = vasen
-
-    private List<int[]> edellisetOsumat;
     private boolean tuliOsuma;
-    private boolean tuhottiin;
+
+    private boolean viimeksiTuhoutui;
 
 
     public Tekoaly(Laivastot laivastot) {
         this.laivastot = laivastot;
-        this.edellisetOsumat = new ArrayList<>();
         this.ampumaSuunta = 0;
 
-        varatutKopio = new int[12][12];
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 12; j++)
-                varatutKopio[i][j] = 0;
-        }
-
     }
-
-/*
-    // tallennetaan edelliset osumat listaan
-    public void tallennaOsuma(int[] koordinaatti) {
-        tuliOsuma = true;
-        edellisetOsumat.add(koordinaatti);
-    }*/
 
     public void ammuttiinOhi() {
         tuliOsuma = false;
     }
 
-
-/*    // tämän pitää tarkistaa, onko kahdella peräkkäisellä osumalla vierekkäisiä koordinaatteja
-    public boolean tarkistaEdellisetOsumat() {
-        if (edellisetOsumat.size() == 2) {
-            return true;
-            // jatkuu,,
-        }
-        return false;
-    }*/
-
-
-/*
-    public void setAmpumaSuunta(int suunta) {
-        ampumaSuunta = suunta;
+    public void setViimeksiTuhoutui(boolean arvo) {
+        viimeksiTuhoutui = arvo;
     }
-
-    public void setTuhottiin() {
-        tuhottiin = true;
-    }*/
 
 
     // palauttaa joko 1, -1 tai -2
@@ -65,9 +33,6 @@ public class Tekoaly {
         return laivastot.getOmatVaratutRuudut()[koordinaatti[0]][koordinaatti[1]];
     }
 
-/*    public int tutkiViereinen(int[] koordinaatti) {
-        return varatutKopio[koordinaatti[0]][koordinaatti[1]];
-    }*/
 
     // usein käytetty apumetodi
     public int[] ammuSatunnaiseenMaaliin() {
@@ -103,14 +68,6 @@ public class Tekoaly {
         int[] maali = new int[2];
         int x, y;
 
-        /*
-        asetetaan varattujen ruutujen taulukko isomman 12x12 - taulukon sisään, jotta ruutujen ympäristön voi tutkia
-        helposti ilman ongelmia taulukon rajojen ylityksestä
-        */
-/*        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++)
-                varatutKopio[i + 1][j + 1] = laivastot.getOmatVaratutRuudut()[i][j];
-        }*/
 
         // edellisellä kerralla ei osuttu mihinkään --> ammutaan satunnaiseen ruutuun
         if (!tuliOsuma) {
@@ -118,7 +75,7 @@ public class Tekoaly {
         }
 
         // edellisellä kerralla osutiin, mutta suunta ei vielä tiedossa --> ammutaan edellisen osumakohdan ympäröiviin ruutuihin satunnaisesti
-        else if (tuliOsuma && ampumaSuunta == 0) {
+        else if (tuliOsuma && ampumaSuunta == 0 && !viimeksiTuhoutui) {
 
             x = edellinenOsuma[0];
             y = edellinenOsuma[1];
@@ -176,29 +133,14 @@ public class Tekoaly {
                 arvottavat.add(new int[]{x, y - 1});
             }
 
-
-
-            // laitetaan osumakohtaa ympäröivät koordinaatit listaan
-/*            for (int i = x - 1; i < x + 2; i++) {
-                for (int j = y - 1; j < y + 2; j++) {
-                    // ei tutkita keskikohtaa eikä vinottain vierekkäisiä
-                    if ((i == x && i == y) || (i == x - 1 && j == y - 1) || (i == x - 1 && j == y + 1) || (i == x + 1 && j == y - 1)
-                    || (i == x + 1 && j == y + 1))
-                        continue;
-                    else {
-                        int[] arvo = {i, j};
-                        arvottavat.add(arvo);
-                    }
-                }
-            }*/
-
-
+            // arvontojen läpikäynti, etsitään sopiva kohta ja ammutaan
             while (true) {
 
                 // jos ei ole viereisiä ruutuja, niin jatketaan ampumista muualla
-                if (arvottavat.size() == 0)
+                if (arvottavat.size() <= 0)
                     return ammuSatunnaiseenMaaliin();
 
+                // arvotaan ampumakohta
                 int valinta = random.nextInt(arvottavat.size());
                 maali = arvottavat.get(valinta);
 
@@ -206,43 +148,61 @@ public class Tekoaly {
                     arvottavat.remove(maali);
                     continue;   // arvotaan uusi maali jäljellä olevien joukosta
                 }
-                else if (mitaRuudussaOn(maali) == 0) {
+                else if (mitaRuudussaOn(maali) == 0) {  // ohilaukaus
                     tuliOsuma = false;
                     return maali;
                 }
-                /*                } else if (mitaRuudussaOn(maali) == 1) {
-
-
-                 *//*suunnan asettaminen tähän
-                    verrataan, miten tämän osuman ja edellisen koordinaatit poikkeavat toisistaan*//*
-
+                else if (mitaRuudussaOn(maali) == 1) {  // osuttiin uudelleen laivaan, nyt otetaan siitä suunta seuraavaa vuoroa varten
                     tuliOsuma = true;
-                    edellinenOsuma = maali;
 
+                    int edellinenX = edellinenOsuma[0];
+                    int edellinenY = edellinenOsuma[1];
+                    int nykyinenX = maali[0];
+                    int nykyinenY = maali[1];
+
+                    if (nykyinenX > edellinenX)
+                        ampumaSuunta = 2;   // oikealle
+                    else if (nykyinenX < edellinenX)
+                        ampumaSuunta = 4;   // vasemmalle
+                    else if (nykyinenY > edellinenY)
+                        ampumaSuunta = 1;   // ylös
+                    else if (nykyinenY < edellinenY)
+                        ampumaSuunta = 2;   // alas
+
+                    edellinenOsuma = maali;
                     return maali;
-                }*/
+
+                }
+
+                /*else
+                    return ammuSatunnaiseenMaaliin();*/
 
 
             }
 
         }
 
+        else if (tuliOsuma && ampumaSuunta != 0 && !viimeksiTuhoutui) {  // tiedetään, missä suunnassa pelaajan laiva on
 
-        // miten saa tiedon siitä, että edellinen laiva tuhottiin
-        // vertaillaan viimeksi tuhottujen ja nyt tuhottujen laivojen määrää
+            x = edellinenOsuma[0];
+            y = edellinenOsuma[1];
 
-        // vai olisiko hyvä katsoa edellisen osumakohdan ympärille: tutkittaisiin laivastot-luokan
-        // jo ammuttujen ruutujen taulukkoa, jos osumakohdan ympärillä on nollia, niin ammutaan ensin satunnaisesti
-        // niistä sellaiseen, joka sijaitsee osumakohdan vieressä. jos ei tule uutta osumaa, niin jatketaan seuraavaan
-        // vapaaseen. kun tulee osuma ja uppoaa --> lopetetaan tämän alueen ampuminen ja arvotaan uusi. jos tulee osuma
-        // eikä uppoa, jatketaan samaan suuntaan kunnes upotetaan
+            if (ampumaSuunta == 1)
+                y--;
 
+            else if (ampumaSuunta == 2)
+                x++;
 
+            else if (ampumaSuunta == 3)
+                y++;
 
+            else if (ampumaSuunta == 4)
+                x--;
 
+            maali = new int[]{x, y};
+            return maali;
 
-
-
+        }
 
 
         return new int[2];
