@@ -29,6 +29,9 @@ public class Kontrolleri {
     private String osumaSt = "-fx-background-color: red; ";
 
 
+    // kirjanpito vihollisten laivojen lukumääristä
+
+
     public Kontrolleri() {
         this.omatRuudut = new Button[10][10];
         this.vihunRuudut = new Button[10][10];
@@ -55,9 +58,9 @@ public class Kontrolleri {
         infoRuutu.setPrefSize(300, 100);
         VBox tekstit = new VBox();
         Label lblVeneOtsikko = new Label("Vihollisen laivasto:");
-        Label lblSubit = new Label("Sukellusveneet:");
-        Label lblRist = new Label("Risteilijät:");
-        Label lblLento = new Label("Lentotukialukset:");
+        Label lblSubit = new Label("Sukellusveneet: 3");
+        Label lblRist = new Label("Risteilijät: 2");
+        Label lblLento = new Label("Lentotukialukset: 1");
         tekstit.getChildren().addAll(lblVeneOtsikko, lblSubit, lblRist, lblLento);
         infoRuutu.setRight(tekstit);
 
@@ -112,6 +115,8 @@ public class Kontrolleri {
         runko.setBottom(alaOsa);
 
 
+
+
         // ruutuihin ampuminen vuorotellen: pelaajan napin toiminnallisuuden sisään on leivottu tekoälyn oma siirto,
         // joka tapahtuu 2 sekunnin viiveellä (pelaaja voi klikata nopeamminkin, jos tuntuu liian hitaalta)
         for (int i = 0; i < 10; i++) {
@@ -141,6 +146,10 @@ public class Kontrolleri {
                         outputTeksti.setText(   "***********************************************\n" +
                                                 "Kaikki vihollisen laivat tuhottu, voitit pelin!");
 
+
+                    lblSubit.setText("Sukellusveneet: " + laivastot.getVihunSubit());
+                    lblRist.setText("Risteilijät: " + laivastot.getVihunRist());
+                    lblLento.setText("Lentotukialukset: " + laivastot.getVihunLento());
 
                     // *********************
                     // vihollisen vuoro

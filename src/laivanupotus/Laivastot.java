@@ -20,7 +20,8 @@ public class Laivastot {
         this.vihunVaratutRuudut = new int[10][10];
     }
 
-    public int getLaivaTyypinMaara(int koko, List<Laiva> laivasto) {
+    // vain tämän luokan käyttöön
+    private int getLaivaTyypinMaara(int koko, List<Laiva> laivasto) {
         int maara = 0;
         for (Laiva laiva: laivasto) {
             if (laiva.getKoko() == koko)
@@ -28,6 +29,34 @@ public class Laivastot {
         }
         return maara;
     }
+
+    public int getVihunSubit() {
+        int maara = 0;
+        for (Laiva laiva: vihunLaivat) {
+            if (laiva.getKoko() == 1 && !laiva.onkoTuhoutunut())
+                maara++;
+        }
+        return maara;
+    }
+
+    public int getVihunRist() {
+        int maara = 0;
+        for (Laiva laiva: vihunLaivat) {
+            if (laiva.getKoko() == 2 && !laiva.onkoTuhoutunut())
+                maara++;
+        }
+        return maara;
+    }
+
+    public int getVihunLento() {
+        int maara = 0;
+        for (Laiva laiva: vihunLaivat) {
+            if (laiva.getKoko() == 3 && !laiva.onkoTuhoutunut())
+                maara++;
+        }
+        return maara;
+    }
+
 
     public List<Laiva> getOmatLaivat() {
         return omatLaivat;
