@@ -61,7 +61,8 @@ public class Logiikka {
                         laiva.getRistSijainti()[1][1] == y) {
 
                             String palautus = laiva.setOsuma();
-                            if (!palautus.equals("laiva sai osuman!")) {
+                            //if (!palautus.equals("laiva sai osuman!")) {
+                            if (laiva.onkoTuhoutunut()) {
                                 tekoaly.setViimeksiTuhoutui(true);
                                 return palautus;
                             }
@@ -76,7 +77,8 @@ public class Logiikka {
                         laiva.getLentoSijainti()[1][1] == y || laiva.getLentoSijainti()[2][0] == x && laiva.getLentoSijainti()[2][1] == y) {
 
                             String palautus = laiva.setOsuma();
-                            if (!palautus.equals("laiva sai osuman!")) {
+                            //if (!palautus.equals("laiva sai osuman!")) {
+                            if (laiva.onkoTuhoutunut()) {
                                 tekoaly.setViimeksiTuhoutui(true);
                                 return palautus;
                             }

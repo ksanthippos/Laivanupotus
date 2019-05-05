@@ -20,10 +20,10 @@ public class Kontrolleri {
     private Tekoaly tekoaly;
 
     // nappien CSS-värityylit
-    private String omaLaivaSt = "-fx-background-color: #A0522D; -fx-border-color: black; -fx-border-width: 0 1 1 0; ";
+    private String omaLaivaSt = "-fx-background-color: #D2691E; -fx-border-color: black; -fx-border-width: 0 1 1 0; ";
     private String vihuLaivaSt = "-fx-background-color: #B8860B; -fx-border-color: black; -fx-border-width: 0 1 1 0;";
-    private String vesiSt = "-fx-background-color: #66CDAA; -fx-border-color: black; -fx-border-width: 0 1 1 0;" ;
-    private String vihuOhiSt = "-fx-background-color: yellow; -fx-border-color: black; -fx-border-width: 0 1 1 0;";
+    private String vesiSt = "-fx-background-color: #AFEEEE; -fx-border-color: black; -fx-border-width: 0 1 1 0;" ;
+    private String vihuOhiSt = "-fx-background-color: #00CED1; -fx-border-color: black; -fx-border-width: 0 1 1 0;";
     private String osumaSt = "-fx-background-color: red; -fx-border-color: black; -fx-border-width: 0 1 1 0; ";
 
 
@@ -73,6 +73,7 @@ public class Kontrolleri {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 Button ruutu = new Button(" ");
+                ruutu.setStyle("-fx-border-color: black; -fx-border-width: 0 1 1 0;");
                 //ruutu.setStyle(vesiSt);
                 vihunRuudut[i][j] = ruutu;
                 ruutu.setFont(Font.font("Monospaced", 15));
@@ -155,6 +156,7 @@ public class Kontrolleri {
                     int maali[] = tekoaly.tekoAlyAmpuu();
                     int a = maali[0];
                     int b = maali[1];
+                    tekoaly.getArvottavat();
 
                     Button nappi = omatRuudut[a][b];
                     nappi.setOnAction(eV -> {

@@ -2,6 +2,7 @@ package laivanupotus;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -70,6 +71,30 @@ public class Paaohjelma extends Application {
 
         lopetaPeli.setOnAction(e -> {
             System.exit(0);
+        });
+
+        peliOhje.setOnAction(e -> {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setHeaderText("Peliohjeet");
+            info.setContentText("Tässä laivanupotuksen versiossa kamppaillaan tekoälyä vastaan ja pelilauta generoidaan " +
+                                "automaattisesti. Jos laivamuodostelmaa haluaa vaihtaa, sen saa tehtyä " +
+                                "nopeasti pelivalikosta. Pelialueen koko on aina 10 x 10 ruutua ja laivojen " +
+                                "määrä on kummallakin osapuolella seuraavanlainen: \n\n" +
+                                "Sukellusveneitä 3 kpl\n" +
+                                "Risteilijöitä 2 kpl\n" +
+                                "Lentotukialuksia 1 kpl\n\n" +
+                                "Aloitusvuoro on pelaajalla. Peli päättyy, kun toisen osapuolen kaikki laivat " +
+                                "on upotettu.\n\n" +
+                                "Hyviä pelejä!");
+            info.showAndWait();
+        });
+
+        peliTiedot.setOnAction(e -> {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setHeaderText("MR-Laivanupotus v.1.0");
+            info.setContentText("(c) Mikael Rauhala, 2019");
+            info.showAndWait();
+
         });
 
 /*        aloitaPeli.setOnAction(e -> {
